@@ -4,8 +4,9 @@ import { HttpModule } from '@angular/http';
 import 'rxjs/Rx';
 // import our application component
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.components';
-import { NavBarComponent } from './components/navbar/navbar.components';
+import { HomeComponent } from './components/home/home.component';
+import { NavBarComponent} from './components/navbar/navbar.component';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -16,10 +17,11 @@ import { NavBarComponent } from './components/navbar/navbar.components';
         BrowserModule,
         HttpModule
     ],
-providers: [
-],
+    providers: [
+    ],
     bootstrap: [
         AppComponent
     ],
 })
+
 export class AppModule { }
