@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using FisherInsuranceApi.Data;
-using FisherInsuranceApi.Quotes;
+using FisherInsuranceApi.Models;
 
 namespace FisherInsuranceApi.Controllers
 {
@@ -11,40 +11,57 @@ namespace FisherInsuranceApi.Controllers
     public class QuotesController : Controller
     { 
 
-    private IMemoryStore db;
-    public QuotesController(IMemoryStore repo) {
-    db = repo;
-        }
+        private readonly FisherContext db;
+
+    public QuotesController(FisherContext context)
  
+            {
+        db = context;
+        }   
+
+
             // POST api/auto/quotes
-            [HttpPost]
+        [HttpPost]
             public IActionResult Post([FromBody] Quote quote) {
-            return Ok(db.CreateQuote(quote));
-        }
+            var newClaim = db.Quotes.Add(quote);
+            db.SaveChanges();
+            return CreatedAtRoute("GetClaim", new { id = quote.Id }, quote); 
+            
+            }
 
         // GET api/auto/quotes/5
-             [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetQuotes")]
             public IActionResult Get(int id) {
-          return Ok(db.RetrieveQuote(id));
+          return Ok(db.Quotes.Find(id));
        }
 
-       // PUT api/auto/quotes/id
-            [HttpPut("{id}")]
-            public IActionResult Put([FromBody] Quote quote) {
-      
-        return Ok(db.UpdateQuote(quote));
-        }
-        // DELETE api/auto/quotes/id
-             [HttpDelete("{id}")]
-            public IActionResult Delete(int id, [FromBody] Quote quote) {
-        db.DeleteQuote(id);
-         return Ok();
-        }
 
-           [HttpGet]
-        public IActionResult GetQuotes() {
-        return Ok(db.RetrieveAllQuotes);
-}
+       // PUT api/auto/quotes/id
+           [HttpPut("{id}")]
+            public IActionResult Put(int id, [FromBody] Quote quote) {
+            var newQuote = db.Quotes.Find(id); 
+            if (newQuote == null)
+            {
+                return NotFound();
+            }
+            newQuote = quote;
+            db.SaveChanges();
+            return Ok(newQuote);
+            }
+        // DELETE api/auto/quotes/id
+           [HttpDelete("{id}")]
+                public IActionResult Delete(int id) {
+                 var quoteToDelete = db.Quotes.Find(id);
+                 if (quoteToDelete == null)
+                 {
+                    return NotFound();
+                  }
+                  db.Quotes.Remove(quoteToDelete);
+                  db.SaveChangesAsync();
+                  return NoContent();
+                  }
+
+           
  
 
     }

@@ -1,6 +1,6 @@
 using System;
 
-namespace FisherInsuranceApi.Claims{
+namespace FisherInsuranceApi.Models{
     public class Claim
     
     {

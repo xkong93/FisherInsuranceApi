@@ -1,6 +1,6 @@
 using System;
 
-namespace FisherInsuranceApi.Quotes{
+namespace FisherInsuranceApi.Models{
     public class Quote
     
     {
