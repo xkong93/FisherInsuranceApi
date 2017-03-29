@@ -23,9 +23,9 @@ namespace FisherInsuranceApi.Controllers
             // POST api/auto/quotes
         [HttpPost]
             public IActionResult Post([FromBody] Quote quote) {
-            var newClaim = db.Quotes.Add(quote);
+            var newQuote = db.Quotes.Add(quote);
             db.SaveChanges();
-            return CreatedAtRoute("GetClaim", new { id = quote.Id }, quote); 
+            return CreatedAtRoute("GetQuotes", new { id = quote.Id }, quote); 
             
             }
 
@@ -60,9 +60,6 @@ namespace FisherInsuranceApi.Controllers
                   db.SaveChangesAsync();
                   return NoContent();
                   }
-
-           
- 
 
     }
 }
